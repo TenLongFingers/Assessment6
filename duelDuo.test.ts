@@ -5,6 +5,7 @@ import { forEachChild, visitEachChild } from "typescript"
 require('chromedriver')
 
 const driver = new Builder().withCapabilities(Capabilities.chrome()).build()
+const bots = require('./data.js')
 
 beforeEach(async () => {
     driver.get('http://localhost:3000/')
@@ -25,10 +26,10 @@ test('Draw button displays choices', async () => {
     const choices = await driver.findElement(By.id('choices'))
     expect(choices.isDisplayed()).toBeTruthy
 })
-//This one I expect to return false
+//I expect this to fail, because this is a known
 test('Show all robots button works', async () =>{
     await driver.findElement(By.id('see-all')).click();
     const allBots = await driver.findElement(By.id('all-bots'))
-    const botCard = await driver.findElement(By.className('bot-card'))
-    expect(allBots).toContain(botCard);
+    const innerHTML = await allBots.getAttribute('innerHTML')
+    expect(innerHTML).not.toBe("")
 })
