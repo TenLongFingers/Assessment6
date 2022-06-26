@@ -7,11 +7,21 @@ const { shuffleArray } = require("./utils");
 
 app.use(express.json());
 
-//this is the code I added
+//Rollbar package
+var Rollbar = require("rollbar");
+var rollbar = new Rollbar({
+  accessToken: "dedde7eeff0d4b7584a007d78650fbfa",
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+});
+
+// record a generic message and send it to Rollbar
+rollbar.log("Hello world!");
+
+// heroku deployment
 app.use(express.static(path.join(__dirname, `public`)));
 app.use("/styles", express.static(path.join(__dirname, "public", "index.css")));
 app.use("/js", express.static(path.join(__dirname, "public", "index.js")));
-//end added code
 
 app.get("/api/robots", (req, res) => {
   try {
